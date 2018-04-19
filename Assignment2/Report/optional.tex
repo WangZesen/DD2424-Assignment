@@ -1,0 +1,104 @@
+\input format
+
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{harpoon}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{listings}
+
+
+\usetikzlibrary{fit,positioning}
+
+\begin{document}
+\begin{flushleft}
+
+\bf{DD2424 Assignment 2 Report (For Optional Part)} \\
+\bf{Zesen Wang} \\
+
+
+\end{flushleft}
+
+\section{Optimize the Performance of the Network}
+
+In this part, I implement 3 optimization method.
+
+\begin{enumerate}[(a)]
+	\item Early stopping: Save the model with best validation accuracy, and stop training if there is no improvement on validation set for more than 10 epoches.
+	\item He Initialization: Set the standard deviation as $\sqrt{2/n_{in}}$
+	\item Do a more exhaustic search to find good value with He Initialization.
+	\item Decay the learning rate by 0.1 after every 8 epoches.
+\end{enumerate}
+
+For the following experiments, these parameters are same.
+\begin{verbatim}
+lambda=0.0023292248102687557, eta=0.017453577972249945, momemtum=0.95, n_batch=100
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: He Initialization + Exhaustic Random Search
+n_epoch=30
+Accuracy on test set: 0.5151
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: Early Stopping + Exhaustic Random Search
+N_no_improvement=10
+Accuracy on test set: 0.5179
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: Learning Rate Decay by 0.1 + Exhaustic Random Search
+n_epoch=30, Decay_cycle=8
+Accuracy on test set: 0.5200
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: All Methods
+Decay_cycle=8, N_no_improvement=10
+Accuracy on test set: 0.5241
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: None
+Accuracy on test set: 0.5127
+\end{verbatim}
+
+It indicates that the Learning Rate Decay improves the network most, and their combination gives the most gain among all experiments.
+
+\newpage
+\section{Leaky ReLU Activation}
+
+The activation function I use here is leaky ReLU activation function.
+
+\[
+	\varphi(x)=\left\{\begin{aligned}
+		x (x\geq0)\\
+		0.01x (x\leq0)
+	\end{aligned}\right.
+\]
+
+I tests the leaky ReLU function on the experiment with no optimization method and the experiment with all optimization method mentioned above. The results are listed below. 
+
+\begin{verbatim}
+Optimization method: All Methods + Leaky ReLU Activation
+Decay_cycle=8, N_no_improvement=10
+Accuracy on test set: 0.5246
+\end{verbatim}
+
+\begin{verbatim}
+Optimization method: None + Leaky ReLU Activation
+Accuracy on test set: 0.5210
+\end{verbatim}
+
+It shows that leaky ReLU activation actually leads to some improvement for the accuracy on test set compared to simple ReLU activation.
+
+\end{document}
+
+
